@@ -29,9 +29,10 @@ loadMoreBtn.addEventListener('click', onClickLoadMore)
 
 async function onSudmitForm(event) {
     event.preventDefault();
-    searchQuery = event.currentTarget.searchQuery.value;
+   window.scrollTo(0, 0)
+    searchQuery = event.currentTarget.searchQuery.value.trim();
     currentPage = 1
-
+console.log(event.currentTarget[0].value)
     if (searchQuery === '') {
         return
     }
@@ -58,13 +59,13 @@ async function onSudmitForm(event) {
   .firstElementChild.getBoundingClientRect();
 
 window.scrollBy({
-  top: cardHeight * 2,
+  top: cardHeight * -100,
   behavior: "smooth",
 });
         }
         if (response.totalHits === 0) {
             gallery.innerHTML = ''
-            Notify.success(`Sorry, there are no images matching your search query. Please try again.`)
+            Notify.failure(`Sorry, there are no images matching your search query. Please try again.`)
             endCollection.classList.add('is-hidden')
             loadMoreBtn.classList.add('is-hidden')
         }
@@ -80,8 +81,9 @@ async function onClickLoadMore() {
     renderCardImage(response.hits)
     lightbox.refresh();
     currentHits += response.hits.length
-
-    if (currentHits === response.totalHits) {
+    console.log(response.totalHits)
+    console.log(currentHits)
+    if (currentHits >= response.totalHits) {
         loadMoreBtn.classList.add('is-hidden');
     endCollection.classList.remove('is-hidden');
     }
